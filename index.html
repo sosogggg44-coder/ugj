@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Rahaf | Stay With Me</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000;
+            --text-color: #fff;
+            --gold-gradient: linear-gradient(90deg, #ffd700, #ffb6c1, #ffffff);
+            --glow-shadow: 0 0 35px rgba(255, 255, 255, 0.25), 0 0 80px rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Premium Frame */
+        .frame {
+            position: absolute;
+            inset: 20px;
+            border-radius: 25px;
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: var(--glow-shadow);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Stars Background */
+        .stars-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            font-size: 28px;
+            color: white;
+            transition: transform 1.2s ease, opacity 1.2s ease;
+        }
+
+        /* Intro Text */
+        #intro {
+            position: absolute;
+            font-size: 42px;
+            color: white;
+            letter-spacing: 6px;
+            font-family: 'Cinzel Decorative', serif;
+            text-align: center;
+            max-width: 80%;
+            line-height: 1.6;
+            opacity: 1;
+            transition: opacity 1.2s ease;
+            z-index: 5;
+        }
+
+        .intro-gradient {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* Name Container */
+        #name-container {
+            display: none;
+            align-items: center;
+            font-size: clamp(60px, 15vw, 185px);
+            font-family: 'Cinzel Decorative', serif;
+            color: #ffffff;
+            letter-spacing: 18px;
+            text-shadow: 0 0 15px #ffffff, 0 0 35px #dddddd, 0 0 70px #ffffff, 0 0 120px rgba(255, 255, 255, 0.5);
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+            z-index: 2;
+        }
+
+        .letter {
+            display: inline-block;
+            transition: transform 1.5s cubic-bezier(.19, 1, .22, 1), opacity 1.5s ease;
+        }
+
+        .letter.shaking {
+            transform: scale(1.15);
+        }
+
+        .letter.broken {
+            opacity: 0;
+            transform: var(--random-transform);
+        }
+
+        /* Animations */
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="frame"></div>
+    <div class="stars-container" id="stars">
+        <span class="star" style="left: 20%; top: 25%;">✦</span>
+        <span class="star" style="left: 75%; top: 30%;">✦</span>
+        <span class="star" style="left: 30%; top: 70%;">✦</span>
+        <span class="star" style="left: 80%; top: 75%;">✦</span>
+    </div>
+
+    <div id="intro">
+        <span class="intro-gradient">My Love, I Love You — Stay With Me</span>
+    </div>
+
+    <div id="name-container">
+        <!-- Letters will be injected by JS -->
+    </div>
+
+    <script>
+        const name = "Rahaf";
+        const introEl = document.getElementById('intro');
+        const nameContainer = document.getElementById('name-container');
+        const stars = document.querySelectorAll('.star');
+
+        // Create letters
+        name.split('').forEach((char, i) => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.className = 'letter';
+            span.style.transitionDelay = `${i * 0.12}s`;
+            nameContainer.appendChild(span);
+        });
+
+        const letters = document.querySelectorAll('.letter');
+
+        function getRandomTransform() {
+            const x = Math.floor(Math.random() * 800 - 400);
+            const y = Math.floor(Math.random() * 800 - 400);
+            const rotate = Math.floor(Math.random() * 1080 - 540);
+            return `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(1.8)`;
+        }
+
+        // Sequence
+        setTimeout(() => {
+            introEl.style.opacity = '0';
+            setTimeout(() => {
+                introEl.style.display = 'none';
+                nameContainer.style.display = 'flex';
+                nameContainer.classList.add('floating');
+            }, 1000);
+        }, 4000);
+
+        setTimeout(() => {
+            letters.forEach(l => l.classList.add('shaking'));
+        }, 6200);
+
+        setTimeout(() => {
+            letters.forEach(l => {
+                l.style.setProperty('--random-transform', getRandomTransform());
+                l.classList.add('broken');
+            });
+        }, 7000);
+
+        setTimeout(() => {
+            stars.forEach(star => {
+                const x = Math.random() * 600 - 300;
+                const y = Math.random() * 600 - 300;
+                star.style.transform = `translate(${x}px, ${y}px) scale(2)`;
+                star.style.opacity = '0';
+            });
+        }, 8200);
+    </script>
+</body>
+
+</html>
